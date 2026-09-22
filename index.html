@@ -31,6 +31,11 @@ section[id] { scroll-margin-top: var(--hdr, 96px) !important; }
   .hd-actions { flex: 1 1 100%; justify-content: space-between; }
   .hd-phone { font-size: 16px !important; min-height: 34px !important; }
   .hd-btn { min-height: 34px !important; padding: 0 12px !important; font-size: 13px !important; }
+  /* Hero title and the two buttons centre up on a phone; the body copy underneath stays
+     left-aligned, because centred paragraphs are hard to read. */
+  .hero-copy h1, .hero-copy .hero-since { text-align: center !important; }
+  .hero-copy .hero-cta { display: flex !important; width: fit-content !important; margin-left: auto !important; margin-right: auto !important; }
+  .hero-copy .hero-callrow { justify-content: center !important; }
 }
 </style>
 <script>
@@ -109,7 +114,7 @@ document.addEventListener('click', function (e) {
   <div id="top" style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px)">
 
     <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: clamp(28px, 5vw, 72px); align-items: center; padding: clamp(12px, 2vw, 24px) 0 12px">
-      <div>
+      <div class="hero-copy">
         <h1 style="font-family: var(--font-heading); font-weight: 600; font-size: clamp(44px, 6.4vw, 84px); line-height: 1.04; letter-spacing: 0.01em; text-transform: uppercase; margin: 0">
           <span style="display: block">Plumbing and</span>
           <span style="display: block">heating,</span>
@@ -117,8 +122,8 @@ document.addEventListener('click', function (e) {
         </h1>
         <p class="hero-since" style="display: none; margin: 10px 0 0; font-family: var(--font-heading); font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text)">Serving Wadsworth since 1956</p>
         
-        <a href="#book" class="btn btn-primary blueprint" style="display: inline-flex; margin: 28px 0 0; min-height: 60px; padding: 0 32px; font-size: 21px; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 0; border-color: transparent; background: var(--brand-gold); color: #fff" style-hover="background: #9c720a">Get an Estimate<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i></a>
-        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px">
+        <a href="#book" class="btn btn-primary blueprint hero-cta" style="display: inline-flex; margin: 28px 0 0; min-height: 60px; padding: 0 32px; font-size: 21px; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 0; border-color: transparent; background: var(--brand-gold); color: #fff" style-hover="background: #9c720a">Get an Estimate<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i></a>
+        <div class="hero-callrow" style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px">
           <a href="{{ phoneHref }}" class="btn btn-primary blueprint" style="min-height: 60px; padding: 0 24px; font-size: 18px; letter-spacing: 0.04em; border-radius: 0; border-color: transparent; background: var(--brand-gold); color: #fff" style-hover="background: #9c720a">Or call {{ phone }}<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i></a>
         </div>
         <p style="font-size: 19px; line-height: 1.55; max-width: 48ch; margin: 28px 0 0; color: color-mix(in srgb, var(--color-text) 82%, transparent)">Repairs, water heaters, drains, furnaces, HVAC and remodels for Wadsworth homes and businesses. Family owned since 1956, and when something breaks on a Sunday, we still pick up the phone.</p>
