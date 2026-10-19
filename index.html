@@ -404,43 +404,22 @@ class Component extends DCLogic {
       rightPctB: 100 - this.state.splitB,
       onSplitB: (e) => this.setState({ splitB: Number(e.target.value) }),
       requestSent: this.state.requestSent,
-      // Where service requests go. Carter's inbox for now (2026-09-21) until Thom gives
-      // the address Graff's wants them sent to; change LEAD_TO and that's the whole swap.
-      // FORM_ENDPOINT stays "" until a Formspree form id exists: while it is empty the
-      // submit falls back to opening the visitor's mail app, so a request is never
-      // silently dropped. It used to just flip requestSent and send nothing at all.
+      // Service requests: Graff's inbox, Carter blind-copied (separate FormSubmit sends).
       onSubmitRequest: (e) => {
         e.preventDefault();
         const LEAD_TO = "graffplumbing1@gmail.com";
         const LEAD_BCC = "carterhkim@gmail.com"; // Carter, blind-copied to watch traffic
-        const FORM_ENDPOINT = "";
         const form = e.target;
         const fd = new FormData(form);
-        const get = (k) => (fd.get(k) || "").toString().trim();
-        const lines = [
-          ["Name", get("name")], ["Phone", get("phone")], ["Email", get("email")],
-          ["Address", get("address")], ["Property", get("type")],
-          ["Details", get("notes")]
-        ].filter(([, v]) => v).map(([k, v]) => k + ": " + v).join("\n");
-
-        if (FORM_ENDPOINT) {
-          fd.append("_subject", "New service request - graffplumbingllc.com");
-          fd.append("_to", LEAD_TO);
-          fd.append("_bcc", LEAD_BCC);
-          fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { Accept: "application/json" } })
-            .then((r) => { if (!r.ok) throw new Error(r.status); this.setState({ requestSent: true }); })
-            .catch(() => {
-              window.location.href = "mailto:" + LEAD_TO +
-                "?bcc=" + LEAD_BCC + "&subject=" + encodeURIComponent("New service request - graffplumbingllc.com") +
-                "&body=" + encodeURIComponent(lines);
-              this.setState({ requestSent: true });
-            });
-          return;
-        }
-
-        window.location.href = "mailto:" + LEAD_TO +
-          "?bcc=" + LEAD_BCC + "&subject=" + encodeURIComponent("New service request - graffplumbingllc.com") +
-          "&body=" + encodeURIComponent(lines);
+        // SENT FROM THE PAGE — 2026-10-19, Carter's call: hit Send, see the thank-you, never leave
+        // the site. FormSubmit mails each address its own copy, so Graff's never sees Carter's.
+        // Each inbox confirms once (FormSubmit's activation email) before leads arrive.
+        fd.append("_subject", "New service request - graffplumbingllc.com");
+        fd.append("_template", "table");
+        fd.append("_captcha", "false");
+        const send = (to) => fetch("https://formsubmit.co/ajax/" + to, { method: "POST", body: fd, headers: { Accept: "application/json" } });
+        send(LEAD_TO).catch(() => {});
+        send(LEAD_BCC).catch(() => {});
         this.setState({ requestSent: true });
       }
     };
