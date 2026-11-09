@@ -11,6 +11,67 @@
 <meta property="og:title" content="Graff Plumbing and Heating">
 <meta property="og:site_name" content="Graff Plumbing and Heating">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// LEAVE A REVIEW — 2026-11-09. Stars first. 4-5 go straight to Google's write-a-review box.
+// 1-3 get a feedback form (emailed to Graff's + Carter via FormSubmit) AND keep the Google
+// link: Google and the FTC ban hiding the public review option from unhappy customers.
+(function () {
+  var GOOGLE = "https://www.google.com/search?q=Graff%27s+Plumbing+Wadsworth+OH#lrd=0x8830cdaa72719033:0xa4e0f4a0ee1b6191,3,,,,";
+  var TO = ["graffplumbing1@gmail.com", "carterhkim@gmail.com"];
+  var css = document.createElement("style");
+  css.textContent =
+    ".rvm{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);padding:20px}" +
+    ".rvm.on{display:flex}.rvm-box{position:relative;background:#fff;color:#1f2329;max-width:420px;width:100%;padding:30px 26px 26px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25)}" +
+    ".rvm-x{position:absolute;top:8px;right:12px;border:0;background:none;font-size:28px;line-height:1;cursor:pointer;color:#666}" +
+    ".rvm h3{margin:0 0 6px;font-size:22px}.rvm p{margin:0 0 16px;font-size:15px;color:#444}" +
+    ".rvm-stars{display:flex;justify-content:center;gap:6px}.rvm-star{border:0;background:none;font-size:42px;line-height:1;cursor:pointer;color:#d0d3d8;padding:0 2px}.rvm-star.lit{color:#e8a800}" +
+    ".rvm textarea,.rvm input{width:100%;box-sizing:border-box;font:inherit;font-size:15px;padding:10px;border:1px solid #c9ccd1;margin:0 0 10px}" +
+    ".rvm-go{width:100%;min-height:46px;border:0;background:#e8a800;color:#1f2329;font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}" +
+    ".rvm-alt{display:block;margin-top:14px;font-size:13px;color:#555}";
+  document.head.appendChild(css);
+  var m = document.createElement("div");
+  m.className = "rvm";
+  m.innerHTML =
+    '<div class="rvm-box" role="dialog" aria-modal="true" aria-label="Leave a review"><button type="button" class="rvm-x" aria-label="Close">&times;</button>' +
+    '<div class="rvm-p1"><h3>How did we do?</h3><p>Tap a star to rate your experience.</p><div class="rvm-stars">' +
+    [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="rvm-star" data-n="' + n + '" aria-label="' + n + ' star' + (n > 1 ? "s" : "") + '">&#9733;</button>'; }).join("") +
+    '</div></div>' +
+    '<form class="rvm-p2" style="display:none"><h3>We\'re sorry we missed the mark</h3><p>Please give us feedback as to what we can do to earn a higher rating next time.</p>' +
+    '<input name="name" placeholder="Your name (optional)"><input name="contact" placeholder="Phone or email (optional)">' +
+    '<textarea name="feedback" rows="4" required placeholder="What could we have done better?"></textarea>' +
+    '<button type="submit" class="rvm-go">Send feedback</button><a class="rvm-alt" target="_blank" rel="noopener" href="' + GOOGLE + '">Or leave a public review on Google</a></form>' +
+    '<div class="rvm-p3" style="display:none"><h3>Thank you</h3><p>Your feedback went straight to the Graff family. We appreciate you letting us know.</p></div></div>';
+  var stars = 0;
+  function show(n) { ["rvm-p1", "rvm-p2", "rvm-p3"].forEach(function (c, i) { m.querySelector("." + c).style.display = i + 1 === n ? "" : "none"; }); }
+  function light(n) { m.querySelectorAll(".rvm-star").forEach(function (b) { b.classList.toggle("lit", +b.dataset.n <= n); }); }
+  function close() { m.classList.remove("on"); }
+  document.addEventListener("DOMContentLoaded", function () { document.body.appendChild(m); });
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".rv-leave")) { stars = 0; light(0); show(1); m.querySelector("form").reset(); m.classList.add("on"); return; }
+    if (e.target === m || e.target.closest(".rvm-x")) { close(); return; }
+    var st = e.target.closest(".rvm-star");
+    if (!st) return;
+    stars = +st.dataset.n; light(stars);
+    if (stars >= 4) { close(); window.open(GOOGLE, "_blank", "noopener"); }
+    else show(2);
+  });
+  m.addEventListener("mouseover", function (e) { var st = e.target.closest(".rvm-star"); if (st) light(+st.dataset.n); });
+  m.addEventListener("mouseout", function (e) { if (e.target.closest(".rvm-star")) light(stars); });
+  m.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target;
+    TO.forEach(function (to) {
+      var fd = new FormData(f);
+      fd.append("rating", stars + " of 5 stars");
+      fd.append("_subject", "Customer feedback (" + stars + " stars) - graffplumbingllc.com");
+      fd.append("_template", "table");
+      fd.append("_captcha", "false");
+      fetch("https://formsubmit.co/ajax/" + to, { method: "POST", body: fd, headers: { Accept: "application/json" } }).catch(function () {});
+    });
+    show(3);
+  });
+})();
+</script>
 <script src="./support.js"></script>
 <style>[data-pw-water],[data-pw-water] *,figure[data-pw-hero]::after,figure[data-pw-hero]::before{display:none!important;animation:none!important}</style>
 <style>
@@ -200,6 +261,7 @@ document.addEventListener('click', function (e) {
     <section id="reviews" style="scroll-margin-top: 96px; padding: 12px 0">
       <span style="display: inline-flex; align-items: center; gap: 10px; font-size: 13px; line-height: 30px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--color-accent-700); margin: 0 0 12px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="var(--color-accent-700)" stroke-width="1.9" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" style="display:block;flex:none"><path d="M2.5 7.5v8M2.5 9h9.5a5 5 0 0 1 5 5v2M2.5 13h8.5a2 2 0 0 1 2 2v1M12 16h6M8 9V5.5M5 4.5h6"></path><path d="M15 19.3c.7.9 1 1.4 1 1.9a1 1 0 0 1-2 0c0-.5.3-1 1-1.9z"></path></svg>What people say</span>
       <hr style="height: 1px; border: 0; margin: 0 0 32px; background: var(--color-divider)">
+      <button type="button" class="rv-leave btn btn-primary blueprint" style="display: inline-flex; align-items: center; min-height: 46px; margin: 0 0 18px; padding: 0 24px; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 0; border-color: transparent; background: var(--brand-gold); color: var(--color-text); cursor: pointer">Leave a review<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i></button>
       <p style="margin:0 0 20px;font-size:16px;color:color-mix(in srgb, var(--color-text) 75%, transparent)">Rated 4.8 stars on Google from 74 reviews. Here's what customers wrote.</p>
       <div class="rv-wrap" style="position: relative">
       <div class="rv-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start">
